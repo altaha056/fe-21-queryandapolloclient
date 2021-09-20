@@ -24,19 +24,14 @@ const GetTodolistByUserid = gql`
 `;
 
 function TodoList() {
-  const { data, loading, error } = useQuery(GetTodolist);
+  const [getTodo, { data, loading, error }] = useLazyQuery(GetTodolistByUserid);
 
   const [userId, setUserId] = useState(0);
   const [list, setList] = useState([]);
   const [title, setTitle] = useState("");
 
   if (loading) {
-    return (
-      <>
-        <h1 style={{ fontSize: "60px", textAlign: "center" }}>Sedang Memuat</h1>
-        <LoadingAnimated />
-      </>
-    );
+    <LoadingAnimated />;
   }
   if (error) {
     console.log(error);
@@ -65,21 +60,21 @@ function TodoList() {
     setList(newList);
   };
 
-  // const onGetData = () => {
-  //   getTodo({ variables: { user_id: userId } });
-  //   setList(data?.todolist);
-  // };
+  const onGetData = () => {
+    getTodo({ variables: { user_id: userId } });
+    setList(data?.todolist);
+  };
 
-  // const onChangeUserid = (e) => {
-  //   if (e.target) {
-  //     setUserId(e.target.value);
-  //   }
-  // };
+  const onChangeUserid = (e) => {
+    if (e.target) {
+      setUserId(e.target.value);
+    }
+  };
   return (
     <>
       <div className="container">
-        {/* <input value={userId} onChange={onChangeUserid} />
-        <button onClick={onGetData}>Get Data</button> */}
+        <input value={userId} onChange={onChangeUserid} />
+        <button onClick={onGetData}>Get Data</button>
         <h1 className="app-title">todos</h1>
         <ul className="todo-list js-todo-list">
           {data?.todolist.map((v, i) => (
