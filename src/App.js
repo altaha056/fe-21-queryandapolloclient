@@ -31,7 +31,10 @@ function TodoList() {
   const [title, setTitle] = useState("");
 
   if (loading) {
-    <LoadingAnimated />;
+    <>
+      <h1 style={{ fontSize: "60px", textAlign: "center" }}>Sedang Memuat</h1>
+      <LoadingAnimated />
+    </>;
   }
   if (error) {
     console.log(error);
